@@ -3,15 +3,20 @@ package com.manage.customer_backend.service.impl;
 import com.manage.customer_backend.entity.Customer;
 import com.manage.customer_backend.repository.CustomerRepository;
 import com.manage.customer_backend.service.CustomerService;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-@RequiredArgsConstructor
+
 
 public class CustomerServiceImpl implements CustomerService {
-    public CustomerRepository customerRepository;
+    public final CustomerRepository customerRepository;
+
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
     @Override
     public List<Customer> bringAllCustomers() {
         return customerRepository.findAll();
