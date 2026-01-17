@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>Müşteri Listesi</h1>
+
+  <div class="customer-list">
+    
+    @for (customer of customers; track customer) {
+      <div class="card">
+        <h3>{{ customer.ad }} {{ customer.soyad }}</h3>
+        <p><strong>Email:</strong> {{ customer.email }}</p>
+        <p><strong>Meslek:</strong> {{ customer.meslek }}</p>
+      </div>
+    } 
+    @empty {
+      <div class="card" style="text-align: center; color: gray;">
+        <p>⚠️ Şu an gösterilecek müşteri bulunamadı.</p>
+        <p>(Backend çalışıyor mu?)</p>
+      </div>
+    }
+    </div>
+</div>
