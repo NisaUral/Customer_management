@@ -1,20 +1,49 @@
 <div class="container">
-  <h1>Müşteri Listesi</h1>
+  <h1>Müşteri Yönetim Paneli</h1>
+
+  <div class="form-card" [class.editing]="editingCustomerId">
+    <h3>
+      {{ editingCustomerId ? ' Müşteriyi Düzenle' : ' Yeni Müşteri Ekle' }}
+    </h3>
+    
+    <div class="form-group">
+      <input type="text" placeholder="Ad" [(ngModel)]="newCustomer.ad">
+      <input type="text" placeholder="Soyad" [(ngModel)]="newCustomer.soyad">
+    </div>
+
+    <div class="form-group">
+      <input type="text" placeholder="Email" [(ngModel)]="newCustomer.email">
+      <input type="text" placeholder="Meslek" [(ngModel)]="newCustomer.meslek">
+    </div>
+
+    <div class="button-group">
+      <button class="save-btn" (click)="saveOrUpdate()">
+        {{ editingCustomerId ? 'Güncelle' : 'Kaydet' }}
+      </button>
+
+      @if (editingCustomerId) {
+        <button class="cancel-btn" (click)="resetForm()">İptal</button>
+      }
+    </div>
+  </div>
+
+  <hr>
 
   <div class="customer-list">
-    
     @for (customer of customers; track customer) {
       <div class="card">
         <h3>{{ customer.ad }} {{ customer.soyad }}</h3>
         <p><strong>Email:</strong> {{ customer.email }}</p>
         <p><strong>Meslek:</strong> {{ customer.meslek }}</p>
+        
+        <div class="card-actions">
+          <button class="edit-btn" (click)="editMode(customer)"> Düzenle</button>
+          
+          <button class="delete-btn" (click)="deleteCustomer(customer.id)"> Sil</button>
+        </div>
       </div>
-    } 
-    @empty {
-      <div class="card" style="text-align: center; color: gray;">
-        <p>⚠️ Şu an gösterilecek müşteri bulunamadı.</p>
-        <p>(Backend çalışıyor mu?)</p>
-      </div>
+    } @empty {
+      <p style="text-align: center;">Henüz hiç kayıt yok.</p>
     }
-    </div>
+  </div>
 </div>
