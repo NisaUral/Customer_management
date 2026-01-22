@@ -1,49 +1,81 @@
-<div class="container">
-  <h1>Müşteri Yönetim Paneli</h1>
-
-  <div class="form-card" [class.editing]="editingCustomerId">
-    <h3>
-      {{ editingCustomerId ? ' Müşteriyi Düzenle' : ' Yeni Müşteri Ekle' }}
-    </h3>
+<div class="dashboard-wrapper">
+  
+  <aside class="sidebar">
+    <div class="logo">
+      <h2> CRM Panel</h2>
+    </div>
     
-    <div class="form-group">
-      <input type="text" placeholder="Ad" [(ngModel)]="newCustomer.ad">
-      <input type="text" placeholder="Soyad" [(ngModel)]="newCustomer.soyad">
-    </div>
-
-    <div class="form-group">
-      <input type="text" placeholder="Email" [(ngModel)]="newCustomer.email">
-      <input type="text" placeholder="Meslek" [(ngModel)]="newCustomer.meslek">
-    </div>
-
-    <div class="button-group">
-      <button class="save-btn" (click)="saveOrUpdate()">
-        {{ editingCustomerId ? 'Güncelle' : 'Kaydet' }}
+    <nav class="menu">
+      <button (click)="toggleForm(true)" class="menu-btn add-btn">
+         Yeni Müşteri Ekle
       </button>
+      
 
-      @if (editingCustomerId) {
-        <button class="cancel-btn" (click)="resetForm()">İptal</button>
-      }
-    </div>
-  </div>
 
-  <hr>
+      </nav>
+  </aside>
 
-  <div class="customer-list">
-    @for (customer of customers; track customer) {
-      <div class="card">
-        <h3>{{ customer.ad }} {{ customer.soyad }}</h3>
-        <p><strong>Email:</strong> {{ customer.email }}</p>
-        <p><strong>Meslek:</strong> {{ customer.meslek }}</p>
-        
-        <div class="card-actions">
-          <button class="edit-btn" (click)="editMode(customer)"> Düzenle</button>
-          
-          <button class="delete-btn" (click)="deleteCustomer(customer.id)"> Sil</button>
-        </div>
+  <main class="main-content">
+    
+    <header class="top-bar">
+      <div class="search-box">
+        <input type="text" 
+               placeholder="Müşteri ara (Ad, Soyad, Meslek)..." 
+               [(ngModel)]="searchText">
       </div>
-    } @empty {
-      <p style="text-align: center;">Henüz hiç kayıt yok.</p>
-    }
-  </div>
+    </header>
+
+    <div class="content-area">
+
+      @if (showForm) {
+        <div class="form-overlay">
+          <div class="form-card">
+            <h3>{{ editingCustomerId ? ' Müşteriyi Düzenle' : ' Yeni Müşteri' }}</h3>
+            
+            <div class="form-grid">
+              <input type="text" placeholder="Ad" [(ngModel)]="newCustomer.ad">
+              <input type="text" placeholder="Soyad" [(ngModel)]="newCustomer.soyad">
+              <input type="text" placeholder="Email" [(ngModel)]="newCustomer.email">
+              <input type="text" placeholder="Meslek" [(ngModel)]="newCustomer.meslek">
+            </div>
+
+            <div class="form-actions">
+              <button class="save-btn" (click)="saveOrUpdate()">
+                {{ editingCustomerId ? 'Güncelle' : 'Kaydet' }}
+              </button>
+              <button class="cancel-btn" (click)="toggleForm(false)">İptal</button>
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="customer-grid">
+        @for (customer of filteredCustomers; track customer) {
+          <div class="card">
+            <div class="card-header">
+              <div class="avatar">{{ customer.ad.charAt(0) }}</div>
+              <div>
+                <h4>{{ customer.ad }} {{ customer.soyad }}</h4>
+                <small>{{ customer.meslek }}</small>
+              </div>
+            </div>
+            
+            <div class="card-body">
+              <p> {{ customer.email }}</p>
+            </div>
+
+            <div class="card-footer">
+              <button class="action-btn edit" (click)="editMode(customer)"> Düzenle</button>
+              <button class="action-btn delete" (click)="deleteCustomer(customer.id)"> Sil</button>
+            </div>
+          </div>
+        } @empty {
+          <div class="no-data">
+            <p>Aradığınız kriterde müşteri bulunamadı.</p>
+          </div>
+        }
+      </div>
+
+    </div>
+  </main>
 </div>
